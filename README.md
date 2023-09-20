@@ -1,0 +1,1 @@
+# searxng-advanced-search-plugin
