@@ -30,10 +30,13 @@ class AdvancedFiltersProcessor(Extension):
         )
 
     def preprocess(self, source, name, filename=None):
-        tree = etree.fromstring(source)
-        form = tree.find("/form[@id='search']")
+        try:
+            tree = etree.fromstring(source)
+            form = tree.find("/form[@id='search']")
 
-        if not form:
+            if form is None:
+                raise Exception()
+        except Exception as e:
             return source
 
         for filter_element in self.find_filter_elements(form):
@@ -46,16 +49,17 @@ class AdvancedFiltersProcessor(Extension):
             return super().parse(parser)
 
         lineno = next(parser.stream).lineno
+        template = parser.parse_expression()
 
-        parser.stream.skip(1)
-
-        tree = etree.fromstring(self.environment.get_template('simple/simple_search.html'))
+        tree = etree.fromstring(self.environment.get_template(template))
 
         filter_elements = etree.fromstring(
             self.find_filter_elements(tree)
         )
 
         simple_filters = nodes.Const(f'{filter_elements}', lineno=lineno)
+
+        parser.stream.skip(1)
 
         return nodes.CallBlock(simple_filters, [], [], []).set_lineno(lineno)
 
@@ -73,7 +77,11 @@ class AssetIncluderProcessor(Extension):
         return f'data:{mime};base64,{data}'
 
     def preprocess(self, source, name, filename=None):
-        tree = etree.fromstring(source)
+        try:
+            tree = etree.fromstring(source)
+        except Exception as e:
+            return source
+
         body = tree.find("//body")
         head = tree.find("//head")
 
