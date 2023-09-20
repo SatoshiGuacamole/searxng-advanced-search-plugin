@@ -1,0 +1,15 @@
+{% if 'advanced_search' in preferences.plugins.get_enabled() %}
+<div id="advanced_search">
+  <div class="categories">
+    {% include 'simple/categories.html' %}
+  </div>
+  
+  <div class="filters">
+    {% include 'simple/filters/languages.html' %}
+    {% include 'simple/filters/time_range.html' %}
+    {% include 'simple/filters/safesearch.html' %}
+  </div>
+</div>
+{% else %}
+{% simple_search_filters 'simple/simple_search.html' %}
+{% endif %}
