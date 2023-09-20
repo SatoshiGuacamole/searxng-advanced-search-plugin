@@ -9,8 +9,8 @@ import re
 
 name = 'Advanced search filters'
 description = 'Include advanced search filters on the homepage.'
-preference_section = 'ui'
-default_on = False
+preference_section = 'superuser'
+default_on = True
 
 def init(app, settings):
     app.jinja_env.add_extension(AdvancedFiltersProcessor)
