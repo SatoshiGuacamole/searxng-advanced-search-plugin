@@ -1,4 +1,4 @@
-{% if 'advanced_search' in preferences.get_value('enabled_plugins') %}
+{% if 'advanced_search' in preferences.plugins.get_enabled() %}
 <div id="advanced_search">
   <div class="categories">
     {% include 'simple/categories.html' %}
