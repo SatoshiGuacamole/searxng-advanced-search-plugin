@@ -37,6 +37,8 @@ class AdvancedFiltersProcessor(Extension):
             if form is None:
                 raise Exception()
         except Exception as e:
+            if name == 'simple/simple_search.html':
+                logger.debug("AdvancedFiltersProcessor", source, e)
             return source
 
         for filter_element in self.find_filter_elements(form):
@@ -80,6 +82,8 @@ class AssetIncluderProcessor(Extension):
         try:
             tree = etree.fromstring(source)
         except Exception as e:
+            if name == 'simple/base.html':
+                logger.debug("AssetIncluderProcessor", source, e)
             return source
 
         body = tree.find("//body")
